@@ -641,10 +641,9 @@
   function handleSearch() {
     const val = document.getElementById('searchInput').value.trim().toUpperCase();
     if (val) {
-      alert(`🚀 Dashboard for ${val} coming soon!\n\nThis will load the full visual analysis for ${val}.`);
+      window.location.href = `folioswarm-dashboard.html?ticker=${val}`;
     }
-  }
-  document.getElementById('searchInput').addEventListener('keydown', function(e) {
+  }  document.getElementById('searchInput').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') handleSearch();
   });
 </script>
