@@ -23,7 +23,6 @@
       background-size: 60px 60px; pointer-events: none;
     }
 
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -47,11 +46,9 @@
     }
     .nav-btn:hover { background: var(--orange-light); }
 
-    /* SCREENS */
     #setupScreen, #loadingScreen, #dashScreen { position: relative; z-index: 1; }
     #loadingScreen, #dashScreen { display: none; }
 
-    /* SETUP */
     #setupScreen {
       max-width: 540px; margin: 120px auto 0; padding: 48px 40px;
       background: var(--card); border: 1px solid var(--border); border-radius: 20px; text-align: center;
@@ -79,14 +76,12 @@
     }
     .setup-btn:hover { background: var(--orange-light); }
 
-    /* LOADING */
     #loadingScreen { max-width: 400px; margin: 200px auto 0; text-align: center; }
     .spinner { width: 56px; height: 56px; margin: 0 auto 24px; border: 3px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loadingScreen h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 8px; }
     #loadingScreen p { color: var(--muted); font-size: 14px; }
 
-    /* DASHBOARD */
     #dashScreen { max-width: 1080px; margin: 0 auto; padding: 96px 24px 60px; }
 
     .stock-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
@@ -146,7 +141,6 @@
 <body>
 <div class="bg-grid"></div>
 
-<!-- NAV -->
 <nav>
   <div class="logo" onclick="goHome()">
     <svg width="30" height="30" viewBox="0 0 36 36" fill="none">
@@ -164,7 +158,6 @@
   </div>
 </nav>
 
-<!-- SETUP -->
 <div id="setupScreen">
   <h2>🚀 Connect Live Data</h2>
   <p>Folioswarm uses <strong>Finnhub</strong> for real-time stock data. It's completely free — grab your key in 60 seconds.</p>
@@ -181,14 +174,12 @@
   <button class="setup-btn" onclick="saveKey()">Launch Folioswarm →</button>
 </div>
 
-<!-- LOADING -->
 <div id="loadingScreen">
   <div class="spinner"></div>
   <h3 id="loadingTicker">Loading…</h3>
   <p>Fetching live data &amp; generating AI summary</p>
 </div>
 
-<!-- DASHBOARD -->
 <div id="dashScreen">
   <div class="stock-header fade-in">
     <div>
@@ -236,14 +227,24 @@
 </div>
 
 <script>
-let FINNHUB_KEY = 'd7d6bipr01qggoen5jcgd7d6bipr01qggoen5jd0';
+let FINNHUB_KEY = '';
 let chartInstance = null;
 let chartCache = {};
 let currentTicker = '';
 
 window.onload = () => {
   const saved = localStorage.getItem('fs_finnhub_key');
-  if (saved) { FINNHUB_KEY = saved; showScreen('none'); }
+  if (saved) {
+    FINNHUB_KEY = saved;
+    showScreen('none');
+    // Auto-load ticker from URL param if present
+    const params = new URLSearchParams(window.location.search);
+    const ticker = params.get('ticker');
+    if (ticker) {
+      document.getElementById('navInput').value = ticker;
+      doSearch();
+    }
+  }
 };
 
 function showScreen(name) {
@@ -253,7 +254,10 @@ function showScreen(name) {
   if (name === 'none') document.getElementById('setupScreen').style.display = 'none';
 }
 
-function goHome() { showScreen('setup'); }
+// FIX: go back to landing page instead of setup screen
+function goHome() {
+  window.location.href = 'index.html';
+}
 
 function saveKey() {
   const k = document.getElementById('apiKeyInput').value.trim();
@@ -261,6 +265,13 @@ function saveKey() {
   FINNHUB_KEY = k;
   localStorage.setItem('fs_finnhub_key', k);
   showScreen('none');
+  // Auto-load ticker from URL param after key saved
+  const params = new URLSearchParams(window.location.search);
+  const ticker = params.get('ticker');
+  if (ticker) {
+    document.getElementById('navInput').value = ticker;
+    doSearch();
+  }
 }
 
 async function doSearch() {
@@ -289,8 +300,10 @@ async function doSearch() {
   }
 }
 
+// FIX: call Finnhub directly instead of /api/finnhub proxy
 async function api(path) {
-  const r = await fetch(`/api/finnhub${path}&token=${FINNHUB_KEY}`);  if (!r.ok) throw new Error(`API error ${r.status}`);
+  const r = await fetch(`https://finnhub.io/api/v1${path}&token=${FINNHUB_KEY}`);
+  if (!r.ok) throw new Error(`API error ${r.status}`);
   return r.json();
 }
 
@@ -318,7 +331,6 @@ function render(ticker, quote, profile, metrics, candles) {
   el.className = 'price-change ' + (up ? 'up' : 'down');
   document.getElementById('dUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
 
-  // Sentiment
   const m = metrics?.metric || {};
   let score = 50;
   const cp = ((quote.c - quote.pc) / quote.pc) * 100;
@@ -400,14 +412,14 @@ function sc(s) { if (s == null) return '#555'; if (s >= 65) return '#2DD4BF'; if
 function renderStats(quote, metrics, profile) {
   const m = metrics?.metric || {};
   document.getElementById('statsGrid').innerHTML = [
-    { label: 'Open',       val: '$' + n2(quote.o) },
-    { label: "Today's High", val: '$' + n2(quote.h) },
-    { label: "Today's Low",  val: '$' + n2(quote.l) },
-    { label: 'Prev Close', val: '$' + n2(quote.pc) },
-    { label: '52W High',   val: m['52WeekHigh'] ? '$' + n2(m['52WeekHigh']) : '—' },
-    { label: '52W Low',    val: m['52WeekLow']  ? '$' + n2(m['52WeekLow'])  : '—' },
-    { label: 'Market Cap', val: profile?.marketCapitalization ? big(profile.marketCapitalization * 1e6) : '—' },
-    { label: 'Industry',   val: profile?.finnhubIndustry || '—' },
+    { label: 'Open',           val: '$' + n2(quote.o) },
+    { label: "Today's High",   val: '$' + n2(quote.h) },
+    { label: "Today's Low",    val: '$' + n2(quote.l) },
+    { label: 'Prev Close',     val: '$' + n2(quote.pc) },
+    { label: '52W High',       val: m['52WeekHigh'] ? '$' + n2(m['52WeekHigh']) : '—' },
+    { label: '52W Low',        val: m['52WeekLow']  ? '$' + n2(m['52WeekLow'])  : '—' },
+    { label: 'Market Cap',     val: profile?.marketCapitalization ? big(profile.marketCapitalization * 1e6) : '—' },
+    { label: 'Industry',       val: profile?.finnhubIndustry || '—' },
   ].map(s => `<div class="stat-card"><div class="stat-lbl">${s.label}</div><div class="stat-val">${s.val}</div></div>`).join('');
 }
 
