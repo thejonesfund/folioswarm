@@ -301,12 +301,12 @@ async function doSearch() {
 }
 
 // FIX: call Finnhub directly instead of /api/finnhub proxy
+
 async function api(path) {
-  const r = await fetch(`https://finnhub.io/api/v1${path}&token=${FINNHUB_KEY}`);
+  const r = await fetch(`/api/finhub?path=${encodeURIComponent(path)}`);
   if (!r.ok) throw new Error(`API error ${r.status}`);
   return r.json();
 }
-
 async function fetchCandles(sym, range) {
   const now = Math.floor(Date.now() / 1000);
   const days = { '1W': 7, '1M': 30, '3M': 90, '1Y': 365 }[range] || 30;
