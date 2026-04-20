@@ -6,17 +6,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch(
-      `https://api.finhub.io/your-endpoint?ticker=${ticker}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.FINHUB_API_KEY}`,
-        },
-      }
-    );
+    const url = `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.FINHUB_API_KEY}`;
+
+    const response = await fetch(url);
 
     if (!response.ok) {
-      return res.status(response.status).json({ error: "Finhub error" });
+      return res.status(response.status).json({ error: "Finnhub error" });
     }
 
     const data = await response.json();
