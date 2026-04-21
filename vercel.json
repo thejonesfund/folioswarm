@@ -1,5 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/api/finnhub/:path*", "destination": "https://finnhub.io/api/v1/:path*" }
-  ]
+  "functions": {
+    "api/finnhub.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
