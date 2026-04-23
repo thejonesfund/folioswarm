@@ -278,13 +278,14 @@ async function doSearch() {
   document.getElementById('loadingTicker').textContent = `Analyzing ${raw}…`;
 
   try {
-    const [quote, profile, metrics, candles] = await Promise.all([
+    const [quote, profile, metrics] = await Promise.all([
       api(`/quote?symbol=${raw}`),
       api(`/stock/profile2?symbol=${raw}`),
-      api(`/stock/metric?symbol=${raw}&metric=all`),
-      fetchCandles(raw, '1W')
+      api(`/stock/metric?symbol=${raw}&metric=all`)
     ]);
     if (!quote || quote.c === 0) throw new Error('No data found. Check the ticker symbol and try again.');
+    // Candles are optional — fail silently if unavailable
+    const candles = await fetchCandles(raw, '1W').catch(() => null);
     chartCache['1W'] = candles;
     render(raw, quote, profile, metrics, candles);
     generateAI(raw, quote, profile, metrics);
