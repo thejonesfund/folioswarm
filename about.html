@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Folioswarm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E8651A;
+      --orange-light: #F5873A;
+      --navy-deep: #0F1A30;
+      --text-muted: #8A94A6;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--navy-deep);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(232,101,26,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,101,26,0.04) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none;
+    }
+    .bg-glow {
+      position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(232,101,26,0.12) 0%, transparent 70%);
+      z-index: 0; pointer-events: none;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(15,26,48,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 0.04em; }
+    .logo-text .folio { color: var(--orange); }
+    .logo-text .swarm { color: #fff; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--orange); }
+    .nav-cta { background: var(--orange); color: #fff; border: none; padding: 10px 22px; border-radius: 6px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+    .nav-cta:hover { background: var(--orange-light); }
+
+    /* PAGE */
+    .page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 140px 24px 100px; }
+
+    /* HERO */
+    .page-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,101,26,0.12); border: 1px solid rgba(232,101,26,0.3);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--orange);
+      margin-bottom: 28px;
+    }
+    .page-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(48px, 7vw, 80px);
+      font-weight: 900; line-height: 0.95;
+      margin-bottom: 24px;
+    }
+    .page-title span { color: var(--orange); }
+    .page-intro {
+      font-size: 19px; font-weight: 300; line-height: 1.7;
+      color: #ccd4e0; max-width: 640px; margin-bottom: 72px;
+    }
+
+    /* MISSION */
+    .mission-block {
+      background: rgba(232,101,26,0.06);
+      border: 1px solid rgba(232,101,26,0.2);
+      border-radius: 20px; padding: 48px;
+      margin-bottom: 64px;
+    }
+    .mission-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 16px;
+    }
+    .mission-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(28px, 4vw, 42px); font-weight: 900;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    .mission-text {
+      font-size: 16px; color: #ccd4e0; line-height: 1.8;
+    }
+    .mission-text p + p { margin-top: 16px; }
+
+    /* DIVIDER */
+    .divider {
+      border: none; border-top: 1px solid var(--border); margin: 64px 0;
+    }
+
+    /* FOUNDER */
+    .founder-section {}
+    .founder-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--orange); margin-bottom: 24px;
+    }
+    .founder-card {
+      display: flex; gap: 48px; align-items: flex-start;
+    }
+    .founder-avatar {
+      flex-shrink: 0;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(232,101,26,0.12);
+      border: 2px solid rgba(232,101,26,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+    }
+    .founder-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 32px; font-weight: 900; margin-bottom: 4px;
+    }
+    .founder-title {
+      font-size: 14px; color: var(--orange); font-weight: 500; margin-bottom: 20px;
+    }
+    .founder-bio {
+      font-size: 15px; color: #ccd4e0; line-height: 1.8;
+    }
+    .founder-bio p + p { margin-top: 14px; }
+
+    /* CREDENTIALS */
+    .credentials {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;
+    }
+    .cred-tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 14px;
+      font-size: 13px; color: var(--text-muted);
+    }
+
+    /* VALUES */
+    .values-section { margin-top: 80px; }
+    .values-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 36px; font-weight: 900; margin-bottom: 32px;
+    }
+    .values-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .value-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px 24px;
+      transition: background 0.2s;
+    }
+    .value-card:hover { background: rgba(232,101,26,0.05); }
+    .value-icon { font-size: 26px; margin-bottom: 14px; }
+    .value-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 800; margin-bottom: 10px;
+    }
+    .value-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+    /* CTA */
+    .about-cta {
+      margin-top: 80px; text-align: center;
+      background: linear-gradient(135deg, rgba(232,101,26,0.1) 0%, rgba(26,39,68,0.6) 100%);
+      border: 1px solid rgba(232,101,26,0.2);
+      border-radius: 20px; padding: 56px 40px;
+    }
+    .about-cta h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 40px; font-weight: 900; margin-bottom: 14px;
+    }
+    .about-cta p { color: var(--text-muted); font-size: 16px; margin-bottom: 32px; line-height: 1.6; }
+    .cta-btn {
+      background: var(--orange); color: #fff; border: none;
+      padding: 16px 36px; border-radius: 10px;
+      font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 500;
+      cursor: pointer; transition: background 0.2s, transform 0.1s;
+      text-decoration: none; display: inline-block;
+    }
+    .cta-btn:hover { background: var(--orange-light); transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      color: var(--text-muted); font-size: 13px;
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeUp 0.6s ease both; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .founder-card { flex-direction: column; gap: 24px; }
+      .mission-block { padding: 32px 24px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <circle cx="8" cy="18" r="5" fill="#E8651A"/>
+      <circle cx="28" cy="8" r="5" fill="#E8651A"/>
+      <circle cx="28" cy="28" r="5" fill="#E8651A"/>
+      <line x1="12.5" y1="15.5" x2="23.5" y2="10.5" stroke="#E8651A" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="12.5" y1="20.5" x2="23.5" y2="25.5" stroke="#E8651A" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text"><span class="folio">FOLIO</span><span class="swarm">SWARM</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="index.html#how-it-works">How It Works</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <a href="index.html" class="nav-cta">Early Access</a>
+</nav>
+
+<!-- PAGE CONTENT -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="fade-in">
+    <div class="page-badge">Our Story</div>
+    <h1 class="page-title">Built by an insider.<br><span>For everyone else.</span></h1>
+    <p class="page-intro">Folioswarm exists because the tools professional investors use have never made it to the people who need them most — everyday investors trying to make smart decisions with their own money.</p>
+  </div>
+
+  <!-- MISSION -->
+  <div class="mission-block fade-in">
+    <div class="mission-label">Our Mission</div>
+    <h2 class="mission-title">Bridge the gap between complex data and confident decisions.</h2>
+    <div class="mission-text">
+      <p>For decades, the gap between institutional and retail investing has been defined not by access to markets, but access to understanding. Professional money managers blend technical and fundamental analysis as a matter of routine. For most individual investors, that combination has remained out of reach — buried in jargon, scattered across tools, or locked behind expensive advisors.</p>
+      <p>Folioswarm changes that. We translate the same analytical frameworks used by professional portfolio managers into clear, visual intelligence that any investor can act on — in seconds, not hours.</p>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- FOUNDER -->
+  <div class="founder-section fade-in">
+    <div class="founder-label">The Founder</div>
+    <div class="founder-card">
+      <div class="founder-avatar">👤</div>
+      <div>
+        <div class="founder-name">Founder & Builder</div>
+        <div class="founder-title">Former Investment Executive · Folioswarm</div>
+        <div class="founder-bio">
+          <p>After careers at Charles Schwab, Merrill Lynch, and Raymond James — managing money for individuals, businesses, and pension plans — I saw firsthand how differently professional investors approach decision-making compared to the people they serve.</p>
+          <p>I sold my practice in 2013 with one goal: build a platform that gives everyday investors the same analytical clarity that institutional managers take for granted. For years, Folioswarm was a passion project. When AI matured to the point where a single builder could create something genuinely powerful, I knew the time was right to build it lean and build it right.</p>
+          <p>Folioswarm is the tool I wish every client had walked in with.</p>
+        </div>
+        <div class="credentials">
+          <span class="cred-tag">Charles Schwab</span>
+          <span class="cred-tag">Merrill Lynch</span>
+          <span class="cred-tag">Raymond James</span>
+          <span class="cred-tag">Portfolio Management</span>
+          <span class="cred-tag">Pension Plans</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <div class="values-section fade-in">
+    <h2 class="values-title">What we stand for</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🔍</div>
+        <div class="value-name">Transparency</div>
+        <p class="value-desc">Every metric is explained. We never show a number without telling you what it means and why it matters.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚖️</div>
+        <div class="value-name">Balance</div>
+        <p class="value-desc">We present both technical and fundamental analysis together — the same balanced view professional managers rely on.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🎯</div>
+        <div class="value-name">Accessibility</div>
+        <p class="value-desc">No assumed knowledge. No paywalls to get started. Serious investing insight shouldn't require a finance degree.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <div class="value-name">Speed</div>
+        <p class="value-desc">Markets move fast. Folioswarm gives you a complete picture of any stock in seconds, not sessions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="about-cta fade-in">
+    <h2>Ready to invest with clarity?</h2>
+    <p>Join the waitlist and be among the first to access Folioswarm when we open to the public.</p>
+    <a href="index.html" class="cta-btn">Get Early Access →</a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="logo" style="gap:8px; text-decoration:none;">
+    <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
+      <circle cx="8" cy="18" r="5" fill="#E8651A"/>
+      <circle cx="28" cy="8" r="5" fill="#E8651A"/>
+      <circle cx="28" cy="28" r="5" fill="#E8651A"/>
+      <line x1="12.5" y1="15.5" x2="23.5" y2="10.5" stroke="#E8651A" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="12.5" y1="20.5" x2="23.5" y2="25.5" stroke="#E8651A" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:0.04em;">
+      <span style="color:#E8651A">FOLIO</span><span style="color:#fff">SWARM</span>
+    </span>
+  </a>
+  <span>© 2025 Folioswarm. Not financial advice.</span>
+  <span>folioswarm.com</span>
+</footer>
+
+</body>
+</html>
