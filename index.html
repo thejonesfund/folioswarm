@@ -178,6 +178,46 @@
     .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; color: var(--orange); }
     .stat-label { font-size: 12px; font-weight: 400; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
 
+    /* ── HOW IT WORKS ── */
+    .hiw {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 100px 24px 60px; text-align: center;
+    }
+    .hiw .section-sub { max-width: 520px; margin: 0 auto 72px; }
+    .hiw-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0; position: relative;
+    }
+    .hiw-step {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0 32px; position: relative;
+    }
+    .hiw-step:not(:last-child)::after {
+      content: '→';
+      position: absolute; right: -8px; top: 36px;
+      font-size: 24px; color: var(--orange);
+      opacity: 0.4;
+    }
+    .hiw-num {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 2px solid rgba(232,101,26,0.4);
+      background: rgba(232,101,26,0.08);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 28px; font-weight: 900; color: var(--orange);
+      margin-bottom: 24px;
+    }
+    .hiw-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 800; margin-bottom: 12px;
+    }
+    .hiw-desc {
+      font-size: 14px; color: var(--text-muted); line-height: 1.7;
+      max-width: 220px;
+    }
+
     .features { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 100px 24px; }
 
     .section-label { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
@@ -266,7 +306,7 @@
   </a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
-    <li><a href="#">How It Works</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#">About</a></li>
   </ul>
   <button class="nav-cta">Early Access</button>
@@ -308,6 +348,30 @@
   <div class="stat"><div class="stat-num">AI-Powered</div><div class="stat-label">Plain English Summaries</div></div>
   <div class="stat"><div class="stat-num">Free</div><div class="stat-label">To Get Started</div></div>
 </div>
+
+<!-- HOW IT WORKS -->
+<section class="hiw" id="how-it-works">
+  <p class="section-label">How It Works</p>
+  <h2 class="section-title">From search to clarity<br>in three steps.</h2>
+  <p class="section-sub">No setup. No spreadsheets. Just type a ticker and Folioswarm does the rest.</p>
+  <div class="hiw-steps">
+    <div class="hiw-step">
+      <div class="hiw-num">1</div>
+      <div class="hiw-title">Search Any Stock</div>
+      <p class="hiw-desc">Type any ticker symbol or company name — AAPL, Tesla, Nvidia. We cover 8,000+ stocks across all major exchanges.</p>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-num">2</div>
+      <div class="hiw-title">See the Visual Breakdown</div>
+      <p class="hiw-desc">Instantly get a full dashboard — live price, fundamental gauges, technical indicators, and market sentiment. All visual, no jargon.</p>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-num">3</div>
+      <div class="hiw-title">Understand What It Means</div>
+      <p class="hiw-desc">Our AI gives you a plain-English summary of what the numbers actually mean for your investment — strengths, risks, and all.</p>
+    </div>
+  </div>
+</section>
 
 <section class="features" id="features">
   <p class="section-label">What We Do</p>
